@@ -41,7 +41,7 @@ const Cards = () => {
     },
   ]);
   return (
-    <div className="flex flex-wrap p-5 mt-2 ml-2">
+    <div className="flex flex-wrap below-header mt-2 ml-2">
       {data.map((e, i) => {
         return (
           <div

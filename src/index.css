@@ -6,3 +6,7 @@ body{
     background-color: rgb(39, 39, 39);
     color: rgb(255, 255, 255);
 }
+
+.below-header{
+    padding: 20px;
+}
