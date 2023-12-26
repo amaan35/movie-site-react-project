@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <div className="text-5xl flex font-bold border-b-4 border-b-white pb-4 pt-2 ps-3 justify-between items-center pr-3 bg-black">
+    <div className="top-0 sticky z-100 text-5xl flex font-bold border-b-4 border-b-white pb-4 pt-2 ps-3 justify-between items-center pr-3 bg-black">
       <Link to={"/"}>
         <span className="cursor-pointer">
           Movie<span className="text-red-600">Pro</span>
