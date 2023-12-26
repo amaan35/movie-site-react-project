@@ -1,67 +1,50 @@
-import React, { useState } from "react";
+import { getDocs } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { Grid } from "react-loader-spinner";
 import ReactStars from "react-stars";
+import { moviesRef } from "../firebase/firebase";
 
 const Cards = () => {
-  const [data, setData] = useState([
-    {
-      name: "Joker",
-      year: "2022",
-      rating: 4,
-      img: "https://m.media-amazon.com/images/M/MV5BNGVjNWI4ZGUtNzE0MS00YTJmLWE0ZDctN2ZiYTk2YmI3NTYyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
-    },
-    {
-      name: "Joker",
-      year: "2022",
-      rating: 4.5,
-      img: "https://m.media-amazon.com/images/M/MV5BNGVjNWI4ZGUtNzE0MS00YTJmLWE0ZDctN2ZiYTk2YmI3NTYyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
-    },
-    {
-      name: "Joker",
-      year: "2022",
-      rating: 5,
-      img: "https://m.media-amazon.com/images/M/MV5BNGVjNWI4ZGUtNzE0MS00YTJmLWE0ZDctN2ZiYTk2YmI3NTYyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
-    },
-    {
-      name: "Joker",
-      year: "2022",
-      rating: 5,
-      img: "https://m.media-amazon.com/images/M/MV5BNGVjNWI4ZGUtNzE0MS00YTJmLWE0ZDctN2ZiYTk2YmI3NTYyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
-    },
-    {
-      name: "Joker",
-      year: "2022",
-      rating: 5,
-      img: "https://m.media-amazon.com/images/M/MV5BNGVjNWI4ZGUtNzE0MS00YTJmLWE0ZDctN2ZiYTk2YmI3NTYyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
-    },
-    {
-      name: "Joker",
-      year: "2022",
-      rating: 5,
-      img: "https://m.media-amazon.com/images/M/MV5BNGVjNWI4ZGUtNzE0MS00YTJmLWE0ZDctN2ZiYTk2YmI3NTYyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
-    },
-  ]);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    async function getData() {
+      setLoading(true);
+      const _data = await getDocs(moviesRef);
+      _data.forEach((doc)=>{
+        setData((prv)=>[...prv, {...(doc.data()), id: doc.id}])
+      })
+      setLoading(false);
+    }
+    getData();
+  }, []);
   return (
-    <div className="flex flex-wrap below-header mt-2 ml-2">
-      {data.map((e, i) => {
-        return (
-          <div
-            key={i}
-            className="p-2 bg-black rounded-lg shadow-xl hover:-translate-y-3 cursor-pointer mb-5 mr-4 transition-all duration-400"
-          >
-            <img className="h-96" src={e.img} />
-            <h1 className="text-xl font-bold mt-1 mb-2 break-words w-36 flex-1">
-              {e.name}
-            </h1>
-            <h1 className="flex items-center">
-              <span className="text-gray-400 mr-1">Rating : </span>
-              <ReactStars size={20} half={true} value={e.rating} edit={false} />
-            </h1>
-            <h1>
-              <span className="text-gray-400">Year : </span> {e.year}
-            </h1>
-          </div>
-        );
-      })}
+    <div className="flex flex-wrap justify-between p-3 mt-2">
+      {loading ? (
+        <div className="w-full flex justify-center items-center min-h-screen"><Grid height={40} color="white" /></div>
+      ) : (
+        data.map((e, i) => {
+          return (
+            <div
+              key={i}
+              className="md:p-2 p-1 bg-black font-medium rounded-lg shadow-xl hover:-translate-y-3 cursor-pointer mb-5 transition-all duration-400"
+            >
+              <img className="md:h-96 h-60" src={e.image} />
+              <h1>
+                {e.title}
+              </h1>
+              <h1 className="flex items-center">
+                <span className="text-gray-400 mr-1">Rating : </span>
+                <ReactStars size={20} half={true} value={5} edit={false} />
+              </h1>
+              <h1>
+                <span className="text-gray-400">Year : </span> {e.year}
+              </h1>
+            </div>
+          );
+        })
+      )}
     </div>
   );
 };
