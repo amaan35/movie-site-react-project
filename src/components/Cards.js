@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Grid } from "react-loader-spinner";
 import ReactStars from "react-stars";
 import { moviesRef } from "../firebase/firebase";
+import { Link } from "react-router-dom";
 
 const Cards = () => {
   const [data, setData] = useState([]);
@@ -26,7 +27,7 @@ const Cards = () => {
       ) : (
         data.map((e, i) => {
           return (
-            <div
+            <Link to={`/detail/${e.id}`}><div
               key={i}
               className="md:p-2 p-1 bg-black font-medium rounded-lg shadow-xl hover:-translate-y-3 cursor-pointer mb-5 transition-all duration-400"
             >
@@ -41,7 +42,7 @@ const Cards = () => {
               <h1>
                 <span className="text-gray-400">Year : </span> {e.year}
               </h1>
-            </div>
+            </div></Link>
           );
         })
       )}
