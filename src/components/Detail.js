@@ -68,7 +68,7 @@ const Detail = () => {
               edit={false}
             />
             <p className="text-white mt-2">{data.description}</p>
-            <Reviews/>
+            <Reviews id={id}/>
           </div>
         </div>
       )}
