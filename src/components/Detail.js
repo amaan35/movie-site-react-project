@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
 import { db } from "../firebase/firebase";
 import { doc, getDoc } from "firebase/firestore";
+import Reviews from "./Reviews";
 
 const Detail = () => {
   const [loading, setLoading] = useState(false);
@@ -67,6 +68,7 @@ const Detail = () => {
               edit={false}
             />
             <p className="text-white mt-2">{data.description}</p>
+            <Reviews/>
           </div>
         </div>
       )}
