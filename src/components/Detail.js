@@ -13,6 +13,8 @@ const Detail = () => {
     year: "",
     image: "",
     description: "",
+    rating: 0,
+    rated: 0
   });
   const { id } = useParams();
   useEffect(() => {
@@ -64,11 +66,11 @@ const Detail = () => {
               className="-z-10"
               size={20}
               half={true}
-              value={5}
+              value={data.rating/data.rated}
               edit={false}
             />
             <p className="text-white mt-2">{data.description}</p>
-            <Reviews id={id}/>
+            <Reviews id={id} prevRating={data.rating} userRated={data.rated}/>
           </div>
         </div>
       )}
