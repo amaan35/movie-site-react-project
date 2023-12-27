@@ -6,9 +6,11 @@ import app from "../firebase/firebase";
 import swal from "sweetalert";
 import { addDoc } from "firebase/firestore";
 import { usersRef } from "../firebase/firebase";
+import { useNavigate } from "react-router-dom";
 
 const auth = getAuth(app);
 const Signup = () => {
+    const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     mobile: "",
@@ -59,6 +61,7 @@ const Signup = () => {
                 buttons: false,
                 timer: 2000
               });
+              navigate('/');
             setLoading(false);
           })
     } catch (error) {
