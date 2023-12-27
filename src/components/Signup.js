@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { RecaptchaVerifier, signInWithPhoneNumber, getAuth } from 'firebase/auth';
 import app from "../firebase/firebase";
 import swal from "sweetalert";
+import { addDoc } from "firebase/firestore";
+import { usersRef } from "../firebase/firebase";
 
 const auth = getAuth(app);
 const Signup = () => {
@@ -46,6 +48,30 @@ const Signup = () => {
     });
   }
 
+  const verifyOTP = () =>{
+    try {
+        setLoading(true);
+        window.confirmationResult.confirm(OTP).then((result) => {
+            uploadData();
+            swal({
+                text: "Successfully registered",
+                icon: "success",
+                buttons: false,
+                timer: 2000
+              });
+            setLoading(false);
+          })
+    } catch (error) {
+        console.log(error);
+    }
+  }
+
+  const uploadData = async () =>{
+    await addDoc(usersRef, {
+        form
+    })
+  }
+
   return (
     <div className="w-full flex flex-col items-center mt-8">
       <h1 className="text-xl font-bold">Sign up</h1>
@@ -66,7 +92,7 @@ const Signup = () => {
             </div>
           </div>
           <div class="p-2 w-full">
-            <button class="flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-700 rounded text-lg">
+            <button onClick={verifyOTP} class="flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-700 rounded text-lg">
               {loading ? <TailSpin height={25} color="white" /> : "Confirm OTP"}
             </button>
           </div>
