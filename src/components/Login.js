@@ -1,13 +1,59 @@
 import React, { useState } from "react";
 import { TailSpin } from "react-loader-spinner";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import swal from "sweetalert";
+import { query, where, getDocs } from 'firebase/firestore'
+import { usersRef } from "../firebase/firebase";
+import bcrypt from 'bcryptjs';
+import {AppState} from '../App';
+import { useContext } from "react";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const useAppstate = useContext(AppState);
     const [form, setForm] = useState({
         mobile: "",
         password: ""
     });
     const [loading, setLoading] = useState(false);
+
+    const login = async () => {
+      setLoading(true);
+      try {
+        const quer = query(usersRef, where('mobile', '==', form.mobile))
+        const querySnapshot = await getDocs(quer);
+        querySnapshot.forEach((doc) => {
+          const _data = doc.data();
+          const isUser = bcrypt.compareSync(form.password, _data.password);
+          if(isUser){
+            useAppstate.setLogin(true);
+            useAppstate.setUserName(_data.name);
+            swal({
+              title: "Successfully logged in",
+              icon: "success",
+              buttons: false,
+              timer: 1000
+            })
+            navigate('/');
+          }else{
+            swal({
+              title: "Invalid credentials",
+              icon: "error",
+              buttons: false,
+              timer: 2000
+            })
+          }
+        });
+      } catch (error) {
+        swal({
+          title: error.message,
+          icon: "error",
+          buttons: false,
+          timer: 2000
+        })
+      }
+      setLoading(false);
+    }
   return (
     <div className="w-full flex flex-col items-center mt-8">
       <h1 className="text-xl font-bold">Login</h1>
@@ -32,6 +78,7 @@ const Login = () => {
             Password
           </label>
           <input
+            type="password"
             id="message"
             name="message"
             value={form.password}
@@ -42,6 +89,7 @@ const Login = () => {
       </div>
       <div class="p-2 w-full">
         <button
+          onClick={login}
           class="flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-700 rounded text-lg"
         >
           {loading ? <TailSpin height={25} color="white" /> : "Login"}
