@@ -12,6 +12,7 @@ const Cards = () => {
   useEffect(() => {
     async function getData() {
       setLoading(true);
+      setData([]);
       const _data = await getDocs(moviesRef);
       _data.forEach((doc)=>{
         setData((prv)=>[...prv, {...(doc.data()), id: doc.id}])

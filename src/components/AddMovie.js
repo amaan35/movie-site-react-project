@@ -36,6 +36,7 @@ const AddMovie = () => {
           description: "",
           image: "",
         });
+        navigate('/');
       }else{
         swal({
           title: "Login is required to add movie",

@@ -15,6 +15,7 @@ const Reviews = ({id, prevRating, userRated}) => {
   const [reviewsLoading, setReviewsLoading] = useState(false);
   const [form, setForm] = useState("");
   const [data, setData] = useState([]);
+  const [refreshReviews, setRefreshReviews] = useState(0);
   const sendReview = async () =>{
     try {
       if(useAppstate.login){
@@ -33,6 +34,7 @@ const Reviews = ({id, prevRating, userRated}) => {
         });
         setRating(0);
         setForm("");
+        setRefreshReviews(refreshReviews+1);
         swal({
             title: "Review sent",
             icon: "success",
@@ -60,6 +62,7 @@ const Reviews = ({id, prevRating, userRated}) => {
   useEffect(()=>{
     async function getData(){
         setReviewsLoading(true);
+        setData([]);
         let quer = query(reviewsRef, where('movieid', '==', id))
         const querySnapshot = await getDocs(quer);
         querySnapshot.forEach((doc)=>{
@@ -69,7 +72,7 @@ const Reviews = ({id, prevRating, userRated}) => {
         setReviewsLoading(false);
     }
     getData();
-  },[])
+  },[refreshReviews])
   return (
     <div className="mt-4 border-t-2 border-gray-500 w-full">
       <ReactStars 
