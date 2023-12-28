@@ -7,6 +7,7 @@ import swal from "sweetalert";
 import { addDoc } from "firebase/firestore";
 import { usersRef } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
+import bcrypt from 'bcryptjs'
 
 const auth = getAuth(app);
 const Signup = () => {
@@ -70,8 +71,14 @@ const Signup = () => {
   }
 
   const uploadData = async () =>{
+    console.log(typeof form.password); 
+    const salt = bcrypt.genSalt(10);
+    console.log(typeof salt);
+    let hash = bcrypt.hashSync(form.password, salt);
     await addDoc(usersRef, {
-        form
+        name: form.name,
+        password: hash,
+        mobile: form.mobile
     })
   }
 
@@ -137,6 +144,7 @@ const Signup = () => {
                 Password
               </label>
               <input
+                type={"password"}
                 id="message"
                 name="message"
                 value={form.password}
