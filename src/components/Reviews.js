@@ -79,7 +79,8 @@ const Reviews = ({id, prevRating, userRated}) => {
         size={25} 
         half={true} 
         value={rating}
-        onChange={(rate) => setRating(rate)} />
+        onChange={(rate) => rate===0?setRating(0):setRating(rate)} />
+      <p className="text-gray-400">{rating === 0 ? 'Please rate this movie' : ''}</p>
       <input
       value={form}
       onChange={(e)=>setForm(e.target.value)}

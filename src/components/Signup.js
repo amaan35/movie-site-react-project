@@ -33,6 +33,16 @@ const Signup = () => {
 
   const requestOtp = () =>{
     setLoading(true);
+    if(form.name.trim()===''||form.mobile.trim()===''||form.password.trim()===''){
+      swal({
+        title: "Please provide all details",
+        icon: 'warning',
+        buttons: false,
+        timer: 1000
+      });
+      setLoading(false);
+      return;
+    }
     generateRecaptcha();
     const appVerifier = window.recaptchaVerifier;
     signInWithPhoneNumber(auth, `+91${form.mobile}`, appVerifier)
@@ -95,7 +105,7 @@ const Signup = () => {
               <input
                 id="message"
                 name="message"
-                value={form.OTP}
+                value={OTP}
                 onChange={(e) => setOTP(e.target.value)}
                 class="w-full bg-gray-300 rounded border border-gray-300 focus:border-indigo-500 focus:bg-gray-200 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               ></input>

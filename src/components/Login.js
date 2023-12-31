@@ -20,8 +20,28 @@ const Login = () => {
     const login = async () => {
       setLoading(true);
       try {
+        if (form.mobile.trim() === '' || form.password.trim() === '') {
+          swal({
+            title: 'Please fill in all fields',
+            icon: 'warning',
+            buttons: false,
+            timer: 2000,
+          });
+          setLoading(false);
+          return;
+        }
         const quer = query(usersRef, where('mobile', '==', form.mobile))
         const querySnapshot = await getDocs(quer);
+        if (querySnapshot.empty) {
+          swal({
+            title: 'User not found',
+            icon: 'error',
+            buttons: false,
+            timer: 1000,
+          });
+          setLoading(false);
+          return;
+        }
         querySnapshot.forEach((doc) => {
           const _data = doc.data();
           const isUser = bcrypt.compareSync(form.password, _data.password);

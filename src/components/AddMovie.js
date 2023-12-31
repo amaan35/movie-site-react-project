@@ -23,7 +23,20 @@ const AddMovie = () => {
     setLoading(true);
     try {
       if (useAppstate.login) {
-        await addDoc(moviesRef, form);
+        if (
+          form.title.trim() === "" ||
+          form.year.trim() === "" ||
+          form.description.trim() === "" ||
+          form.image.trim() === ""
+        ) {
+          swal({
+            title: "All fields are required",
+            buttons: false,
+            timer: 1000,
+          });
+        }
+        else{
+          await addDoc(moviesRef, form);
         swal({
           title: "Successfully added",
           icon: "success",
@@ -37,6 +50,7 @@ const AddMovie = () => {
           image: "",
         });
         navigate('/');
+        }
       }else{
         swal({
           title: "Login is required to add movie",
